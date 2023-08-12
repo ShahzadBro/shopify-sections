@@ -46,3 +46,16 @@
   ]
 }
 {% endschema %}
+
+
+
+
+
+Image call:::
+
+{{
+        section.settings.image
+      | image_url: width: 1500
+      | image_tag: loading: 'lazy', sizes: sizes, widths: widths
+}}
+
