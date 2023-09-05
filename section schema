@@ -49,6 +49,18 @@
 
 
 
+{% for block in section.blocks %}
+  {% case block.type %}
+    {% when 'slide' %}
+      <div class="slide" {{ block.shopify_attributes }}>
+        {{ block.settings.image | image_url: width: 2048 | image_tag }}
+      </div>
+    ...
+  {% endcase %}
+{% endfor %}
+
+
+
 
 
 Image call:::
