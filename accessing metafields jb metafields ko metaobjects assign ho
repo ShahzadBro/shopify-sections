@@ -1,0 +1,168 @@
+
+<style>
+  .collection-meta-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.collection-meta a div {
+    width: 90px;
+    height: 90px;
+    background:#ECECEC;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  .collection-meta div img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius:100px;
+}
+  .product-selection-container h2:first-child {
+    margin: 32px auto 16px;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: center;
+    letter-spacing: .03em;
+}
+  .metafield-rich_text_field p {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.2;
+    text-align: center;
+}
+  .collection-meta {
+    text-align: center;
+}
+.product-description {
+    max-width: 680px;
+    margin: 0 auto 40px;
+}
+  h2.collection-meta-title {
+    padding-top: 10px;
+}
+@media screen and (max-width:768px){
+   .collection-meta-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: scroll;
+  
+}
+  .collection-meta-wrapper::-webkit-scrollbar{
+      -ms-overflow-style: none!important;
+    scrollbar-width: none!important;
+    width:0;
+  }
+    .collection-meta {
+    text-align: center;
+    flex: 1 0 80px;
+}
+    .collection-meta div img {
+        height: 60px;
+        width: 60px;
+}
+  .product-selection-container {
+    padding-bottom: 20px;
+}
+  .collection-meta a div {
+    width: 75px;
+    height: 75px;
+}
+}
+</style>
+
+
+
+
+<div class="section-{{ section.id }}-padding">
+<div class="product-section-main-wrapper">
+<div class="product-selection-container">
+  <h2>{{ collection.title }}</h2>
+  <div class="product-description">
+    {{ section.settings.paragraph }}
+  </div>
+<div class="collection-meta-wrapper">
+  {% assign product-selected=collection.metafields.custom.product_selection.value %}
+    {% for collection in product-selected %}
+      <div class="collection-meta">
+      {% if collection.product_link != blank %}<a href="{{collection.product_link}}">{% endif %}
+      <div>
+      {% if collection.product_image !=blank %}
+              {{
+                collection.product_image
+                | image_url: width: 500
+                | image_tag: loading: 'lazy', sizes: sizes, widths: widths
+              }}
+        {% endif %}
+      </div>
+      {% if collection.product_title !=blank %} <h2 class="collection-meta-title">{{collection.product_title }}</h2>{% endif %}
+     {% if collection.product_link != blank %} </a>{% endif %}
+      </div>
+    {% endfor %}
+</div>
+</div>
+</div>
+</div>
+
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+
+{% schema %}
+  {
+    "name": "product selection",
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "paragraph",
+        "label": "Description"
+      },
+      {
+          "type": "url",
+          "id": "collection-link",
+          "label": "Collection link"
+        },
+          {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "padding bottom",
+      "default": 36
+    }
+    ],
+    "presets":[
+      {
+        "name":"product selection"
+      }
+    ]
+  }
+{% endschema %}
